@@ -94,6 +94,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		 * JOptionPane.showMessageDialog(this, "your score is: " + getScore(),
 		 * "Game Over", JOptionPane.YES_NO_OPTION); System.exit(ABORT);
 		 */
+		 Gdx.app.exit();
 	}
 
 	private void move() {

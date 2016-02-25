@@ -2,15 +2,15 @@ package net.mulligan.game;
 
 import java.awt.Rectangle;
 
-import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 public class Ball {
 	private static final int DIAMETER = 30;
-	
-	int x = 0;
-	int y = 450;
+
+	int x = DIAMETER;
+	int y = 450 - DIAMETER;
 	int xa = 1;
 	int ya = 1;
 	private MyGdxGame game;
@@ -21,23 +21,25 @@ public class Ball {
 
 	void move() {
 		boolean changeDirection = true;
-		if (x + xa < 0)
+//		System.out.println("y="+y +"ya="+ya);
+		if (x + xa < DIAMETER) {
 			xa = game.speed;
-		else if (x + xa > game.getGameWidth() - DIAMETER)
+		} else if (x + xa > game.getGameWidth() - DIAMETER) {
 			xa = -game.speed;
-		else if (y + ya < 0)
+		} else if (y + ya > game.getGameHeight() - DIAMETER) {
 			ya = game.speed;
-		else if (y + ya > game.getGameHeight() - DIAMETER)
+		} else if (y + ya < DIAMETER) {
 			game.gameOver();
-		else if (collision()){
+		} else if (collision()) {
 			ya = -game.speed;
-			y = game.racquet.getTopY() - DIAMETER;
+			y = game.racquet.getTopY() + DIAMETER;
+			System.out.println("y="+y +"ya="+ya);
 			game.speed++;
-		} else 
+		} else {
 			changeDirection = false;
-		
-		if (changeDirection) { 
-//			Sound.BALL.play();
+		}
+		if (changeDirection) {
+			// Sound.BALL.play();
 		}
 		x = x + xa;
 		y = y - ya;
@@ -45,7 +47,7 @@ public class Ball {
 
 	private boolean collision() {
 		boolean intersects = game.racquet.getBounds().intersects(getBounds());
-		System.out.println("RAQ [" + game.racquet.getBounds() + "] BALL [" + getBounds() + "] Intersects="+intersects);
+//		System.out.println("RAQ [" + game.racquet.getBounds() + "] BALL [" + getBounds() + "] Intersects=" + intersects);
 		return intersects;
 	}
 
@@ -53,12 +55,11 @@ public class Ball {
 		this.move();
 		game.getShapeRenderer().setColor(Color.BLACK);
 		game.getShapeRenderer().begin(ShapeType.Filled);
-//		game.getShapeRenderer().circle(DIAMETER, game.getCamera().viewportHeight - 32, 32);
 		game.getShapeRenderer().circle(x, y, DIAMETER);
 		game.getShapeRenderer().end();
 	}
 
 	public Rectangle getBounds() {
-		return new Rectangle(x, y, DIAMETER, DIAMETER);
+		return new Rectangle(x-DIAMETER, y-DIAMETER, DIAMETER*2, DIAMETER*2);
 	}
 }

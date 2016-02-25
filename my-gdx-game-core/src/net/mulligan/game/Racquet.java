@@ -51,6 +51,6 @@ public class Racquet {
 	}
 
 	public int getTopY() {
-		return Y - HEIGHT;
+		return Y + HEIGHT;
 	}
 }
