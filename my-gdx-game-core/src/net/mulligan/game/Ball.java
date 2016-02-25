@@ -10,7 +10,7 @@ public class Ball {
 	private static final int DIAMETER = 30;
 	
 	int x = 0;
-	int y = 0;
+	int y = 450;
 	int xa = 1;
 	int ya = 1;
 	private MyGdxGame game;
@@ -40,11 +40,13 @@ public class Ball {
 //			Sound.BALL.play();
 		}
 		x = x + xa;
-		y = y + ya;
+		y = y - ya;
 	}
 
 	private boolean collision() {
-		return game.racquet.getBounds().intersects(getBounds());
+		boolean intersects = game.racquet.getBounds().intersects(getBounds());
+		System.out.println("RAQ [" + game.racquet.getBounds() + "] BALL [" + getBounds() + "] Intersects="+intersects);
+		return intersects;
 	}
 
 	public void render() {
@@ -52,7 +54,7 @@ public class Ball {
 		game.getShapeRenderer().setColor(Color.BLACK);
 		game.getShapeRenderer().begin(ShapeType.Filled);
 //		game.getShapeRenderer().circle(DIAMETER, game.getCamera().viewportHeight - 32, 32);
-		game.getShapeRenderer().circle(DIAMETER+x, y - DIAMETER, DIAMETER);
+		game.getShapeRenderer().circle(x, y, DIAMETER);
 		game.getShapeRenderer().end();
 	}
 
